@@ -30,6 +30,18 @@
                     <x-nav-link :href="route('admin.branding.show')" :active="request()->routeIs('admin.branding.*')" class="text-gray-900 hover:text-blue-600 hover:border-blue-600 focus:text-blue-600 focus:border-blue-600">
                         {{ __('Branding') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.hero.show')" :active="request()->routeIs('admin.hero.*')" class="text-gray-900 hover:text-blue-600 hover:border-blue-600 focus:text-blue-600 focus:border-blue-600">
+                        {{ __('Hero Section') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="text-gray-900 hover:text-blue-600 hover:border-blue-600 focus:text-blue-600 focus:border-blue-600">
+                        {{ __('Ruang Tulisan') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.services.index')" :active="request()->routeIs('admin.services.*')" class="text-gray-900 hover:text-blue-600 hover:border-blue-600 focus:text-blue-600 focus:border-blue-600">
+                        {{ __('Layanan') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.books.index')" :active="request()->routeIs('admin.books.*')" class="text-gray-900 hover:text-blue-600 hover:border-blue-600 focus:text-blue-600 focus:border-blue-600">
+                        {{ __('Toko Buku') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -87,6 +99,18 @@
             </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.branding.show')" :active="request()->routeIs('admin.branding.*')" class="text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-600">
                     {{ __('Branding') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.hero.show')" :active="request()->routeIs('admin.hero.*')" class="text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-600">
+                    {{ __('Hero Section') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.articles.index')" :active="request()->routeIs('admin.articles.*')" class="text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-600">
+                    {{ __('Ruang Tulisan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.services.index')" :active="request()->routeIs('admin.services.*')" class="text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-600">
+                    {{ __('Layanan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.books.index')" :active="request()->routeIs('admin.books.*')" class="text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-600">
+                    {{ __('Toko Buku') }}
                 </x-responsive-nav-link>
         </div>
 
