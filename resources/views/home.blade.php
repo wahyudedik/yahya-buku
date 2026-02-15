@@ -239,44 +239,74 @@
                         Jangan ragu untuk menghubungi tim kami.
                     </p>
                     
+                    @php
+                        $contact = \App\Models\ContactSetting::first();
+                    @endphp
+
                     <div class="space-y-4">
+                        @if($contact?->address)
                         <div class="flex items-start">
                             <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             </div>
                             <div class="ml-4">
                                 <h4 class="text-sm font-bold text-gray-900 uppercase">Alamat</h4>
-                                <p class="text-gray-600">Kaplingan Dsn. Sambong Dukuh, Jombang</p>
+                                <p class="text-gray-600">{{ $contact->address }}</p>
                             </div>
                         </div>
+                        @endif
                         
+                        @if($contact?->phone)
                         <div class="flex items-start">
                             <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                             </div>
                             <div class="ml-4">
                                 <h4 class="text-sm font-bold text-gray-900 uppercase">Telepon / WhatsApp</h4>
-                                <p class="text-gray-600">085860145144</p>
+                                <p class="text-gray-600">{{ $contact->phone }}</p>
                             </div>
                         </div>
+                        @endif
+
+                        @if($contact?->email)
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-sm font-bold text-gray-900 uppercase">Email</h4>
+                                <p class="text-gray-600">{{ $contact->email }}</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 
                 <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-                    <form class="space-y-4">
+                    @if(session('success'))
+                        <div class="mb-4 bg-green-50 border-l-4 border-green-500 p-4 text-green-700">
+                            <p>{{ session('success') }}</p>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
+                        @csrf
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                            <input type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                            <input type="text" name="name" id="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" name="email" id="email" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
-                            <textarea rows="4" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
+                            <textarea name="message" id="message" rows="4" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                            @error('message') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-                        <button type="button" class="w-full bg-[#002B8F] text-white font-bold py-3 rounded-md hover:bg-blue-800 transition">
+                        <button type="submit" class="w-full bg-[#002B8F] text-white font-bold py-3 rounded-md hover:bg-blue-800 transition">
                             KIRIM PESAN
                         </button>
                     </form>
@@ -293,6 +323,10 @@
                 <p class="text-gray-600">Mengenal lebih dekat Pena Langit Publishing</p>
             </div>
 
+            @php
+                $profile = \App\Models\CompanyProfile::first();
+            @endphp
+
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <!-- CEO Image (Moved from removed section) -->
                 <div class="w-full md:w-1/3 relative">
@@ -302,11 +336,14 @@
                         @endfor
                     </div>
                     <div class="relative z-10 bg-gradient-to-b from-transparent to-blue-900 rounded-lg overflow-hidden">
-                        <img src="https://placehold.co/400x500/002B8F/ffffff?text=Aang+Fathul+Islam" alt="CEO Pena Langit"
-                            class="w-full h-auto object-cover">
+                        @if($profile?->ceo_image_path)
+                            <img src="{{ asset('storage/' . $profile->ceo_image_path) }}" alt="CEO Pena Langit" class="w-full h-auto object-cover">
+                        @else
+                            <img src="https://placehold.co/400x500/002B8F/ffffff?text={{ urlencode($profile?->ceo_name ?? 'Aang Fathul Islam') }}" alt="CEO Pena Langit" class="w-full h-auto object-cover">
+                        @endif
                         <div class="absolute bottom-0 left-0 w-full p-4 text-center text-white bg-blue-900/80">
-                            <h3 class="font-bold text-lg">AANG FATHUL ISLAM</h3>
-                            <p class="text-xs uppercase opacity-80">Direktur Utama</p>
+                            <h3 class="font-bold text-lg">{{ $profile->ceo_name ?? 'AANG FATHUL ISLAM' }}</h3>
+                            <p class="text-xs uppercase opacity-80">{{ $profile->ceo_title ?? 'Direktur Utama' }}</p>
                         </div>
                     </div>
                 </div>
@@ -315,26 +352,24 @@
                 <div class="w-full md:w-2/3">
                     <h3 class="text-2xl font-bold text-gray-800 mb-4">Visi & Misi</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">
-                        Menjadi penerbit buku yang profesional, amanah, dan berkualitas untuk mencerdaskan kehidupan bangsa melalui literasi. 
-                        Kami berkomitmen memberikan layanan terbaik bagi penulis dan pembaca di seluruh Indonesia.
+                        {{ $profile->vision_mission_description ?? 'Menjadi penerbit buku yang profesional, amanah, dan berkualitas untuk mencerdaskan kehidupan bangsa melalui literasi. Kami berkomitmen memberikan layanan terbaik bagi penulis dan pembaca di seluruh Indonesia.' }}
                     </p>
                     
                     <blockquote class="text-xl text-gray-600 italic border-l-4 border-blue-500 pl-4 mb-6">
-                        “Kemerdekaan yang hakiki adalah saat kita bisa mengabadikan gagasan dan pemikiran kita melalui
-                        tulisan, karena tulisan akan abadi tak terbatas oleh ruang dan waktu.”
+                        “{{ $profile->quote ?? 'Kemerdekaan yang hakiki adalah saat kita bisa mengabadikan gagasan dan pemikiran kita melalui tulisan, karena tulisan akan abadi tak terbatas oleh ruang dan waktu.' }}”
                     </blockquote>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                         <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                            <h4 class="font-bold text-blue-600 text-2xl mb-1">500+</h4>
+                            <h4 class="font-bold text-blue-600 text-2xl mb-1">{{ $profile->books_count ?? '500+' }}</h4>
                             <p class="text-xs text-gray-500 uppercase">Judul Buku</p>
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                            <h4 class="font-bold text-blue-600 text-2xl mb-1">1000+</h4>
+                            <h4 class="font-bold text-blue-600 text-2xl mb-1">{{ $profile->authors_count ?? '1000+' }}</h4>
                             <p class="text-xs text-gray-500 uppercase">Penulis</p>
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow-sm text-center">
-                            <h4 class="font-bold text-blue-600 text-2xl mb-1">5th</h4>
+                            <h4 class="font-bold text-blue-600 text-2xl mb-1">{{ $profile->experience_years ?? '5th' }}</h4>
                             <p class="text-xs text-gray-500 uppercase">Pengalaman</p>
                         </div>
                     </div>
@@ -352,24 +387,53 @@
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="col-span-2 row-span-2 relative group overflow-hidden rounded-xl">
-                    <img src="https://placehold.co/600x600/e2e8f0/64748b?text=Event+Utama" alt="Galeri 1" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                        <span class="text-white font-bold">Peluncuran Buku</span>
+                @php
+                    $galleries = \App\Models\Gallery::where('is_active', true)->latest()->take(5)->get();
+                @endphp
+
+                @if($galleries->count() >= 5)
+                    <!-- Layout for 5 items (1 big, 4 small) -->
+                    <div class="col-span-2 row-span-2 relative group overflow-hidden rounded-xl">
+                        <img src="{{ asset('storage/' . $galleries[0]->image_path) }}" alt="{{ $galleries[0]->title }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        @if($galleries[0]->title)
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white font-bold px-4 text-center">{{ $galleries[0]->title }}</span>
+                        </div>
+                        @endif
                     </div>
-                </div>
-                <div class="relative group overflow-hidden rounded-xl">
-                    <img src="https://placehold.co/300x300/e2e8f0/64748b?text=Galeri+2" alt="Galeri 2" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                </div>
-                <div class="relative group overflow-hidden rounded-xl">
-                    <img src="https://placehold.co/300x300/e2e8f0/64748b?text=Galeri+3" alt="Galeri 3" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                </div>
-                <div class="relative group overflow-hidden rounded-xl">
-                    <img src="https://placehold.co/300x300/e2e8f0/64748b?text=Galeri+4" alt="Galeri 4" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                </div>
-                <div class="relative group overflow-hidden rounded-xl">
-                    <img src="https://placehold.co/300x300/e2e8f0/64748b?text=Galeri+5" alt="Galeri 5" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                </div>
+                    @foreach($galleries->skip(1) as $gallery)
+                        <div class="relative group overflow-hidden rounded-xl">
+                            <img src="{{ asset('storage/' . $gallery->image_path) }}" alt="{{ $gallery->title }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            @if($gallery->title)
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm px-2 text-center">{{ $gallery->title }}</span>
+                            </div>
+                            @endif
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Fallback layout for less than 5 items -->
+                    @forelse($galleries as $gallery)
+                        <div class="relative group overflow-hidden rounded-xl aspect-square">
+                            <img src="{{ asset('storage/' . $gallery->image_path) }}" alt="{{ $gallery->title }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                            @if($gallery->title)
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <span class="text-white font-bold px-4 text-center">{{ $gallery->title }}</span>
+                            </div>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-8 text-gray-500">
+                            Belum ada galeri kegiatan.
+                        </div>
+                    @endforelse
+                @endif
+            </div>
+            
+            <div class="text-center mt-8">
+                <a href="{{ route('galeri') }}" class="inline-block border border-blue-600 text-blue-600 font-bold text-sm px-8 py-3 rounded-full hover:bg-blue-600 hover:text-white transition">
+                    LIHAT SEMUA GALERI
+                </a>
             </div>
         </div>
     </section>
@@ -382,16 +446,56 @@
                 <p class="text-gray-600">Bergabunglah bersama tim hebat kami</p>
             </div>
             
-            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 p-8 text-center">
-                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            @php
+                $careers = \App\Models\Career::where('is_active', true)->latest()->take(3)->get();
+            @endphp
+
+            @if($careers->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($careers as $career)
+                        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition p-6 border border-gray-100 flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider mb-2">
+                                        {{ $career->type }}
+                                    </span>
+                                    <h3 class="text-xl font-bold text-gray-900 line-clamp-2">{{ $career->title }}</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                {{ $career->location }}
+                            </div>
+
+                            <div class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">
+                                {{ Str::limit(strip_tags($career->description), 100) }}
+                            </div>
+
+                            <a href="{{ $career->apply_url }}" target="_blank" class="block w-full text-center bg-white border border-blue-600 text-blue-600 font-bold py-2 rounded-lg hover:bg-blue-600 hover:text-white transition">
+                                LAMAR SEKARANG
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Belum ada lowongan dibuka</h3>
-                <p class="text-gray-600 mb-6">
-                    Saat ini kami belum membuka lowongan pekerjaan baru. Pantau terus website dan sosial media kami untuk informasi terbaru.
-                </p>
-                <button class="text-blue-600 font-semibold hover:underline">Lihat di LinkedIn &rarr;</button>
-            </div>
+
+                <div class="text-center mt-10">
+                    <a href="{{ route('karir') }}" class="inline-block font-bold text-blue-600 hover:text-blue-800 transition">
+                        Lihat Semua Lowongan &rarr;
+                    </a>
+                </div>
+            @else
+                <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Belum ada lowongan dibuka</h3>
+                    <p class="text-gray-600 mb-6">
+                        Saat ini kami belum membuka lowongan pekerjaan baru. Pantau terus website dan sosial media kami untuk informasi terbaru.
+                    </p>
+                    <a href="https://linkedin.com" target="_blank" class="text-blue-600 font-semibold hover:underline">Lihat di LinkedIn &rarr;</a>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -404,38 +508,25 @@
             </div>
             
             <div class="max-w-3xl mx-auto space-y-4">
-                <!-- FAQ Item 1 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden" x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
-                        <span class="font-medium text-gray-900">Berapa lama proses penerbitan buku?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div x-show="open" class="p-4 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-200">
-                        Proses penerbitan buku bervariasi tergantung paket yang dipilih, rata-rata memakan waktu 1-3 bulan mulai dari layout, desain cover, hingga pengurusan ISBN dan cetak.
-                    </div>
-                </div>
+                @php
+                    $faqs = \App\Models\Faq::where('is_active', true)->orderBy('order')->orderBy('created_at', 'desc')->get();
+                @endphp
 
-                <!-- FAQ Item 2 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden" x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
-                        <span class="font-medium text-gray-900">Apakah penulis mendapatkan royalti?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div x-show="open" class="p-4 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-200">
-                        Ya, penulis akan mendapatkan royalti dari setiap penjualan buku sesuai dengan kesepakatan dalam surat perjanjian penerbitan.
+                @forelse($faqs as $faq)
+                    <div class="border border-gray-200 rounded-lg overflow-hidden" x-data="{ open: false }">
+                        <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
+                            <span class="font-medium text-gray-900">{{ $faq->question }}</span>
+                            <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="open" class="p-4 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-200">
+                            {!! nl2br(e($faq->answer)) !!}
+                        </div>
                     </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden" x-data="{ open: false }">
-                    <button @click="open = !open" class="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
-                        <span class="font-medium text-gray-900">Bagaimana cara mengirimkan naskah?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div x-show="open" class="p-4 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-200">
-                        Naskah dapat dikirimkan melalui email redaksi kami atau melalui formulir pengiriman naskah di halaman Layanan. Pastikan naskah sudah rapi dan sesuai format yang ditentukan.
+                @empty
+                    <div class="text-center text-gray-500">
+                        Belum ada pertanyaan yang sering diajukan.
                     </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>

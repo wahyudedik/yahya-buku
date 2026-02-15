@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Book;
+use App\Models\Career;
+use App\Models\Faq;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -88,11 +90,13 @@ class PageController extends Controller
 
     public function karir()
     {
-        return view('pages.karir');
+        $careers = Career::where('is_active', true)->latest()->get();
+        return view('pages.karir', compact('careers'));
     }
 
     public function faq()
     {
-        return view('pages.faq');
+        $faqs = Faq::where('is_active', true)->orderBy('order')->orderBy('created_at', 'desc')->get();
+        return view('pages.faq', compact('faqs'));
     }
 }
