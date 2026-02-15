@@ -1,59 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Yahya Book / Pena Langit Publishing
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem manajemen profil perusahaan dan penerbitan buku yang dibangun menggunakan Laravel. Aplikasi ini menyediakan fitur lengkap untuk mengelola konten website, galeri, artikel, layanan, dan toko buku.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Dashboard Admin
+Pusat kontrol untuk mengelola seluruh konten website dengan antarmuka yang mudah digunakan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. Manajemen Halaman Depan
+Kelola tampilan utama website secara dinamis:
+- **Branding**: Upload logo, favicon, dan pengaturan identitas visual.
+- **Hero Section**: Atur banner utama, judul, dan deskripsi selamat datang.
+- **Profil**: Kelola informasi visi, misi, dan profil perusahaan.
+- **FAQ**: Tambah dan kelola daftar pertanyaan yang sering diajukan.
+- **Footer**: Atur informasi kontak, link sosial media, dan copyright di bagian bawah website.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 3. Manajemen Konten
+Kelola berbagai jenis konten publik:
+- **Ruang Tulisan**: Publikasikan artikel dan berita terkini.
+- **Galeri**: Upload dokumentasi kegiatan dan event.
+- **Karir**: Posting lowongan pekerjaan.
+- **Layanan**: Informasikan paket dan layanan penerbitan.
+- **Toko Buku**: Katalog buku terbitan Pena Langit.
 
-## Learning Laravel
+### 4. Manajemen Kontak
+- **Pengaturan Kontak**: Update alamat, nomor telepon/WhatsApp, email, dan link sosial media.
+- **Pesan Masuk**: Pantau pesan yang dikirim pengunjung melalui formulir kontak.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Panduan Instalasi di VPS Ubuntu (aaPanel)
 
-## Laravel Sponsors
+Berikut adalah langkah-langkah untuk menginstal aplikasi ini di VPS Ubuntu yang menggunakan aaPanel.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Persyaratan Sistem
+- PHP >= 8.2
+- Composer
+- MySQL / MariaDB
+- Nginx / Apache
+- Git
 
-### Premium Partners
+### Langkah-langkah Instalasi
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **Login ke aaPanel**
+   - Masuk ke dashboard aaPanel Anda.
+   - Pastikan PHP 8.2 atau lebih baru sudah terinstall di App Store.
 
-## Contributing
+2. **Buat Website Baru**
+   - Pergi ke menu **Website** > **Add Site**.
+   - Masukkan domain (misal: `yahya-buku.test` atau domain asli Anda).
+   - Pilih versi PHP yang sesuai (PHP-82 atau PHP-83).
+   - Buat database MySQL baru saat membuat website. Catat nama database, user, dan password.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Masuk ke Terminal**
+   - Buka menu **Terminal** di aaPanel atau SSH ke server Anda.
+   - Masuk ke direktori root website Anda:
+     ```bash
+     cd /www/wwwroot/domain-anda.com
+     ```
+   - Hapus file default (jika ada):
+     ```bash
+     rm -rf ./*
+     ```
 
-## Code of Conduct
+4. **Clone Repository**
+   - Clone project ini ke dalam folder tersebut:
+     ```bash
+     git clone https://github.com/username/repo-name.git .
+     ```
+     *(Ganti URL dengan repository git Anda)*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Install Dependencies**
+   - Jalankan perintah composer untuk menginstall library PHP:
+     ```bash
+     composer install --optimize-autoloader --no-dev
+     ```
 
-## Security Vulnerabilities
+6. **Konfigurasi Environment (.env)**
+   - Salin file contoh konfigurasi:
+     ```bash
+     cp .env.example .env
+     ```
+   - Edit file `.env`:
+     ```bash
+     nano .env
+     ```
+   - Sesuaikan konfigurasi database:
+     ```
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=nama_database_anda
+     DB_USERNAME=user_database_anda
+     DB_PASSWORD=password_database_anda
+     ```
+   - Simpan dan keluar (Ctrl+X, Y, Enter).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-## License
+8. **Setup Database & Storage**
+   - Jalankan migrasi database dan seeder:
+     ```bash
+     php artisan migrate --seed --force
+     ```
+   - Buat symbolic link untuk storage:
+     ```bash
+     php artisan storage:link
+     ```
+
+9. **Set Permission**
+   - Pastikan folder storage dan cache bisa ditulisi:
+     ```bash
+     chown -R www:www storage bootstrap/cache
+     chmod -R 775 storage bootstrap/cache
+     ```
+
+10. **Konfigurasi Web Server (Nginx)**
+    - Kembali ke menu **Website** di aaPanel.
+    - Klik nama website Anda, lalu masuk ke tab **Site directory**.
+    - Ubah **Running directory** menjadi `/public`.
+    - Masuk ke tab **URL rewrite** dan pilih template **Laravel**, lalu Simpan.
+
+11. **Selesai**
+    - Buka domain Anda di browser.
+    - Login ke dashboard admin dengan akun default (jika menggunakan seeder bawaan):
+      - Email: `admin@penalangit.id`
+      - Password: `password`
+
+---
+
+## Lisensi
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
