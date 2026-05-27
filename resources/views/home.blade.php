@@ -381,7 +381,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">Profil Kami</h2>
-                <p class="text-gray-600">Mengenal lebih dekat Pena Langit Publishing</p>
+                <p class="text-gray-600">Mengenal lebih dekat CV. Azriya permata Group</p>
             </div>
 
             @php
