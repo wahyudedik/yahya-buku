@@ -34,7 +34,7 @@
                                 <h2 class="text-xl font-bold transition-colors duration-300" id="workspace-title">Konten Artikel</h2>
                                 <span id="save-status" class="text-xs text-gray-500 italic transition-colors duration-300"></span>
                             </div>
-                            <textarea id="writing-area" name="content" class="w-full h-96 p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y transition-all duration-300" placeholder="Mulai menulis ide atau draft artikel Anda di sini..." required></textarea>
+                            @include('admin.articles.partials.content-editor')
                         </div>
                     </div>
 
@@ -154,6 +154,7 @@
     <!-- Overlay for mobile sidebar -->
     <div id="sidebar-overlay" onclick="toggleSettings()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
 
+    @push('scripts')
     <script>
         // Configuration State
         const defaultConfig = {
@@ -168,11 +169,17 @@
         let config = { ...defaultConfig };
         let autoSaveTimer = null;
 
-        // Initialization
-        document.addEventListener('DOMContentLoaded', () => {
+        function initRuangTulisanSettings() {
             loadSettings();
             applySettings();
             initAutoSave();
+        }
+
+        document.addEventListener('article-editor:ready', initRuangTulisanSettings);
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.articleEditor) {
+                initRuangTulisanSettings();
+            }
         });
 
         // UI Functions
@@ -198,6 +205,18 @@
         }
 
         // Logic Functions
+        function getEditorContent() {
+            return window.articleEditor?.getContent() ?? document.getElementById('writing-area').value;
+        }
+
+        function setEditorContent(html) {
+            if (window.articleEditor) {
+                window.articleEditor.setContent(html);
+            } else {
+                document.getElementById('writing-area').value = html;
+            }
+        }
+
         function loadSettings() {
             const savedConfig = localStorage.getItem('ruangTulisanConfig');
             if (savedConfig) {
@@ -210,12 +229,9 @@
             document.getElementById('font-size-display').innerText = config.fontSize + 'px';
             document.getElementById('autosave-toggle').checked = config.autoSave;
             document.getElementById('autosave-interval').value = config.autoSaveInterval;
-            // Note: We don't restore content automatically to the textarea because this is a create form, 
-            // unless we want to restore a draft. Let's assume we do for "auto-save draft" feature.
-            // But be careful not to overwrite if editing existing.
-            // For 'create', we can restore draft.
-            if (!document.getElementById('writing-area').value && config.content) {
-                document.getElementById('writing-area').value = config.content;
+
+            if (!getEditorContent() && config.content) {
+                setEditorContent(config.content);
             }
             
             updateAutoSaveUI();
@@ -226,61 +242,39 @@
         }
 
         function applySettings() {
-            const container = document.getElementById('ruang-tulisan-container');
-            const workspace = document.getElementById('writing-area');
-            const titles = document.querySelectorAll('h1, h2, h3, #page-title, #workspace-title');
-            const texts = document.querySelectorAll('.setting-label, .setting-text, #save-status');
-            const cards = document.querySelectorAll('#workspace-card'); // Only style workspace card with theme, leave meta card white/default for admin consistency? Or style all? Let's style workspace mainly.
-            
-            // Apply Theme
+            const workspaceCard = document.getElementById('workspace-card');
+            const editorEl = window.articleEditor?.getEditorElement();
+
+            workspaceCard?.classList.remove('theme-dark', 'theme-sepia', 'theme-light');
+
             if (config.theme === 'dark') {
-                // container.classList.add('bg-gray-900'); // Admin layout handles bg, maybe just darken workspace area?
-                // Actually admin layout usually has gray-100 bg. Let's just style the workspace card.
-                
-                cards.forEach(c => {
-                    c.classList.remove('bg-white', 'bg-[#fdf6e3]', 'border-gray-100');
-                    c.classList.add('bg-gray-800', 'border-gray-700');
-                });
-
-                workspace.classList.remove('bg-white', 'text-gray-900');
-                workspace.classList.add('bg-gray-700', 'text-white', 'border-gray-600');
-
+                workspaceCard?.classList.add('theme-dark');
+                workspaceCard?.classList.remove('bg-white', 'bg-[#fdf6e3]', 'border-gray-100');
+                workspaceCard?.classList.add('bg-gray-800', 'border-gray-700');
             } else if (config.theme === 'sepia') {
-                cards.forEach(c => {
-                    c.classList.remove('bg-white', 'bg-gray-800', 'border-gray-700', 'border-gray-100');
-                    c.classList.add('bg-[#fdf6e3]', 'border-[#e0d6c0]');
-                });
-
-                workspace.classList.remove('bg-white', 'bg-gray-700', 'text-white', 'text-gray-900');
-                workspace.classList.add('bg-[#fdf6e3]', 'text-[#5f4b32]', 'border-[#e0d6c0]');
-
+                workspaceCard?.classList.add('theme-sepia');
+                workspaceCard?.classList.remove('bg-white', 'bg-gray-800', 'border-gray-700', 'border-gray-100');
+                workspaceCard?.classList.add('bg-[#fdf6e3]', 'border-[#e0d6c0]');
             } else {
-                // Light
-                cards.forEach(c => {
-                    c.classList.remove('bg-gray-800', 'bg-[#fdf6e3]', 'border-gray-700', 'border-[#e0d6c0]');
-                    c.classList.add('bg-white', 'border-gray-100');
-                });
-
-                workspace.classList.remove('bg-gray-700', 'bg-[#fdf6e3]', 'text-white', 'text-[#5f4b32]', 'border-gray-600', 'border-[#e0d6c0]');
-                workspace.classList.add('bg-white', 'text-gray-900');
+                workspaceCard?.classList.add('theme-light');
+                workspaceCard?.classList.remove('bg-gray-800', 'bg-[#fdf6e3]', 'border-gray-700', 'border-[#e0d6c0]');
+                workspaceCard?.classList.add('bg-white', 'border-gray-100');
             }
 
-            // Active state for theme buttons
             document.querySelectorAll('.theme-btn').forEach(btn => {
-                if(btn.dataset.theme === config.theme) {
+                if (btn.dataset.theme === config.theme) {
                     btn.classList.add('ring-2', 'ring-blue-500', 'border-blue-500');
                 } else {
                     btn.classList.remove('ring-2', 'ring-blue-500', 'border-blue-500');
                 }
             });
 
-            // Apply Font Family
-            const fontClasses = ['font-sans', 'font-serif', 'font-mono'];
-            workspace.classList.remove(...fontClasses);
-            workspace.classList.add(config.fontFamily);
-
-            // Apply Font Size
-            workspace.style.fontSize = `${config.fontSize}px`;
+            if (editorEl) {
+                const fontClasses = ['font-sans', 'font-serif', 'font-mono'];
+                editorEl.classList.remove(...fontClasses);
+                editorEl.classList.add(config.fontFamily);
+                editorEl.style.fontSize = `${config.fontSize}px`;
+            }
         }
 
         // Setting Setters
@@ -331,8 +325,7 @@
             
             if (config.autoSave) {
                 autoSaveTimer = setInterval(() => {
-                    const content = document.getElementById('writing-area').value;
-                    // Save to local storage as draft
+                    const content = getEditorContent();
                     if (content !== config.content) {
                         config.content = content;
                         saveConfig();
@@ -342,7 +335,7 @@
             }
         }
 
-        document.getElementById('writing-area').addEventListener('input', (e) => {
+        document.getElementById('writing-area').addEventListener('input', () => {
             showSaveStatus('Mengetik...');
         });
 
@@ -358,7 +351,7 @@
 
         function resetSettings() {
             if(confirm('Reset pengaturan tampilan ke default?')) {
-                const currentContent = document.getElementById('writing-area').value;
+                const currentContent = getEditorContent();
                 config = { ...defaultConfig };
                 config.content = currentContent; // Keep content
                 
@@ -376,4 +369,5 @@
             }
         }
     </script>
+    @endpush
 </x-app-layout>

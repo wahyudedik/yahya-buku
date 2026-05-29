@@ -11,15 +11,18 @@ class FooterSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(): void 
     {
         // Seed Footer Settings
-        FooterSetting::create([
-            'description' => 'Kaplingan Dsn. Sambong Dukuh, RT. 04. RW. 07, DS. Sambong Dukuh Kec. Jombang Kab. Jombang Prov. Jawa Timur Indonesia',
-            'copyright_text' => '© ' . date('Y') . ' PT. Nusatama Jaya Sakti . All Right Reserved',
-            'created_by_text' => 'created by',
-            'created_by_url' => 'https://noteds.com',
-        ]);
+        FooterSetting::updateOrCreate(
+            ['id' => 1],
+            [
+                'description' => 'Kaplingan Dsn. Sambong Dukuh, RT. 04. RW. 07, DS. Sambong Dukuh Kec. Jombang Kab. Jombang Prov. Jawa Timur Indonesia',
+                'copyright_text' => '© ' . date('Y') . ' Pena Langit Publishing. All Right Reserved',
+                'created_by_text' => 'created by',
+                'created_by_url' => 'https://noteds.com',
+            ]
+        );
 
         // Seed Footer Links - Tentang Kami
         $aboutLinks = [
@@ -47,13 +50,17 @@ class FooterSeeder extends Seeder
         ];
 
         foreach ($relatedLinks as $index => $link) {
-            FooterLink::create([
-                'title' => $link['title'],
-                'url' => $link['url'],
-                'category' => 'related',
-                'order' => $index,
-                'is_active' => true,
-            ]);
+            FooterLink::updateOrCreate(
+                [
+                    'title' => $link['title'],
+                    'category' => 'related',
+                ],
+                [
+                    'url' => $link['url'],
+                    'order' => $index,
+                    'is_active' => true,
+                ]
+            );
         }
     }
 }

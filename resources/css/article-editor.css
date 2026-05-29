@@ -1,0 +1,61 @@
+.article-quill-editor .ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    font-family: inherit;
+}
+
+.article-quill-editor .ql-container.ql-snow {
+    border: none;
+    font-family: inherit;
+}
+
+.article-quill-editor .ql-editor {
+    min-height: 24rem;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #111827;
+}
+
+.article-quill-editor .ql-editor.ql-blank::before {
+    color: #9ca3af;
+    font-style: normal;
+}
+
+/* Theme: dark workspace */
+#workspace-card.theme-dark .article-quill-editor {
+    border-color: #4b5563;
+}
+
+#workspace-card.theme-dark .article-quill-editor .ql-toolbar.ql-snow {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+#workspace-card.theme-dark .article-quill-editor .ql-toolbar .ql-stroke {
+    stroke: #e5e7eb;
+}
+
+#workspace-card.theme-dark .article-quill-editor .ql-toolbar .ql-fill {
+    fill: #e5e7eb;
+}
+
+#workspace-card.theme-dark .article-quill-editor .ql-toolbar .ql-picker-label {
+    color: #e5e7eb;
+}
+
+#workspace-card.theme-dark .article-quill-editor .ql-editor {
+    background-color: #374151;
+    color: #f9fafb;
+}
+
+/* Theme: sepia */
+#workspace-card.theme-sepia .article-quill-editor .ql-toolbar.ql-snow {
+    background-color: #f4ecd8;
+    border-color: #e0d6c0;
+}
+
+#workspace-card.theme-sepia .article-quill-editor .ql-editor {
+    background-color: #fdf6e3;
+    color: #5f4b32;
+}

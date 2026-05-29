@@ -32,7 +32,7 @@
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-xl font-bold transition-colors duration-300" id="workspace-title">Konten Artikel</h2>
                             </div>
-                            <textarea id="writing-area" name="content" class="w-full h-96 p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y transition-all duration-300" required>{{ old('content', $article->content) }}</textarea>
+                            @include('admin.articles.partials.content-editor', ['content' => $article->content])
                         </div>
                     </div>
 

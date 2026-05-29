@@ -39,8 +39,8 @@
             @endif
 
             <!-- Article Content -->
-            <article class="prose prose-lg prose-blue max-w-none text-gray-700">
-                {!! nl2br(e($article->content)) !!}
+            <article class="article-content">
+                {!! $article->content !!}
             </article>
 
             <!-- Share / Tags (Optional) -->

@@ -11,6 +11,35 @@
         $footerSetting = \App\Models\FooterSetting::first();
         $footerLinks = \App\Models\FooterLink::where('is_active', true)->orderBy('order')->get();
         $contactSetting = \App\Models\ContactSetting::first();
+
+        $isHome = request()->is('/');
+        $isRuangTulisan = request()->routeIs('ruang-tulisan', 'article.show');
+        $isLayanan = request()->routeIs('layanan');
+        $isToko = request()->routeIs('toko', 'book.show');
+        $isKontak = request()->routeIs('kontak');
+        $isProfil = request()->routeIs('profil');
+        $isGaleri = request()->routeIs('galeri');
+        $isKarir = request()->routeIs('karir');
+        $isFaq = request()->routeIs('faq');
+        $isLainnya = $isGaleri || $isKarir || $isFaq;
+        $isLogin = request()->routeIs('login');
+        $isDashboard = request()->routeIs('dashboard', 'profile.edit') || request()->is('admin', 'admin/*');
+
+        $navDesktopClass = fn (bool $active): string => $active
+            ? 'text-blue-600 font-semibold text-sm border-b-2 border-[#002B8F] pb-0.5'
+            : 'text-gray-600 hover:text-blue-600 text-sm font-medium transition-colors';
+
+        $navMobileClass = fn (bool $active): string => $active
+            ? 'block px-3 py-2 rounded-md text-base font-semibold text-blue-600 bg-blue-50'
+            : 'block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50';
+
+        $navDropdownClass = fn (bool $active): string => $active
+            ? 'block px-4 py-2 text-sm text-blue-600 bg-blue-50 font-semibold'
+            : 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600';
+
+        $navDropdownMobileClass = fn (bool $active): string => $active
+            ? 'block px-3 py-2 rounded-md text-sm font-semibold text-blue-600 bg-blue-50'
+            : 'block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50';
     @endphp
     @if (($branding?->favicon_enabled ?? true) && $branding?->favicon_path)
         <link rel="icon" href="{{ asset('storage/' . $branding->favicon_path) . ($v ? '?v=' . $v : '') }}">
@@ -47,21 +76,23 @@
                 <!-- Desktop Menu -->
                 <nav
                     class="hidden md:flex space-x-6 items-center {{ ($branding?->logo_position ?? 'left') === 'center' ? 'mx-auto' : (($branding?->logo_position ?? 'left') === 'right' ? 'ms-auto' : '') }}">
-                    <a href="/" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Home</a>
-                    <a href="{{ route('ruang-tulisan') }}"
-                        class="text-gray-600 hover:text-blue-600 text-sm font-medium">Ruang Tulisan</a>
-                    <a href="{{ route('layanan') }}"
-                        class="text-gray-600 hover:text-blue-600 text-sm font-medium">Layanan</a>
-                    <a href="{{ route('toko') }}" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Toko</a>
-                    <a href="{{ route('kontak') }}"
-                        class="text-gray-600 hover:text-blue-600 text-sm font-medium">Kontak</a>
-                    <a href="{{ route('profil') }}"
-                        class="text-gray-600 hover:text-blue-600 text-sm font-medium">Profil</a>
+                    <a href="/" class="{{ $navDesktopClass($isHome) }}" @if ($isHome) aria-current="page" @endif>Home</a>
+                    <a href="{{ route('ruang-tulisan') }}" class="{{ $navDesktopClass($isRuangTulisan) }}"
+                        @if ($isRuangTulisan) aria-current="page" @endif>Ruang Tulisan</a>
+                    <a href="{{ route('layanan') }}" class="{{ $navDesktopClass($isLayanan) }}"
+                        @if ($isLayanan) aria-current="page" @endif>Layanan</a>
+                    <a href="{{ route('toko') }}" class="{{ $navDesktopClass($isToko) }}"
+                        @if ($isToko) aria-current="page" @endif>Toko</a>
+                    <a href="{{ route('kontak') }}" class="{{ $navDesktopClass($isKontak) }}"
+                        @if ($isKontak) aria-current="page" @endif>Kontak</a>
+                    <a href="{{ route('profil') }}" class="{{ $navDesktopClass($isProfil) }}"
+                        @if ($isProfil) aria-current="page" @endif>Profil</a>
 
                     <!-- Lainnya Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" @click.away="open = false"
-                            class="text-gray-600 hover:text-blue-600 text-sm font-medium flex items-center">
+                            class="{{ $navDesktopClass($isLainnya) }} flex items-center"
+                            @if ($isLainnya) aria-current="true" @endif>
                             Lainnya
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,23 +102,23 @@
                         <div x-show="open"
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100"
                             style="display: none;">
-                            <a href="{{ route('galeri') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Galeri</a>
-                            <a href="{{ route('karir') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Karir</a>
-                            <a href="{{ route('faq') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">FAQ</a>
+                            <a href="{{ route('galeri') }}" class="{{ $navDropdownClass($isGaleri) }}"
+                                @if ($isGaleri) aria-current="page" @endif>Galeri</a>
+                            <a href="{{ route('karir') }}" class="{{ $navDropdownClass($isKarir) }}"
+                                @if ($isKarir) aria-current="page" @endif>Karir</a>
+                            <a href="{{ route('faq') }}" class="{{ $navDropdownClass($isFaq) }}"
+                                @if ($isFaq) aria-current="page" @endif>FAQ</a>
                         </div>
                     </div>
 
                     @if (Route::has('login'))
                         <div class="flex items-center space-x-4 ml-4 border-l pl-4">
                             @auth
-                                <a href="{{ url('/dashboard') }}"
-                                    class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</a>
+                                <a href="{{ url('/dashboard') }}" class="{{ $navDesktopClass($isDashboard) }} px-3 py-2"
+                                    @if ($isDashboard) aria-current="page" @endif>Dashboard</a>
                             @else
-                                <a href="{{ route('login') }}"
-                                    class="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Log in</a>
+                                <a href="{{ route('login') }}" class="{{ $navDesktopClass($isLogin) }} px-3 py-2"
+                                    @if ($isLogin) aria-current="page" @endif>Log in</a>
                                 {{-- @if (Route::has('register'))
                                     <a href="{{ route('register') }}"
                                         class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition">Register</a>
@@ -118,24 +149,23 @@
             x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-gray-100"
             style="display: none;">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
-                <a href="/"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Home</a>
-                <a href="{{ route('ruang-tulisan') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Ruang
-                    Tulisan</a>
-                <a href="{{ route('layanan') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Layanan</a>
-                <a href="{{ route('toko') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Toko</a>
-                <a href="{{ route('kontak') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Kontak</a>
-                <a href="{{ route('profil') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Profil</a>
+                <a href="/" class="{{ $navMobileClass($isHome) }}" @if ($isHome) aria-current="page" @endif>Home</a>
+                <a href="{{ route('ruang-tulisan') }}" class="{{ $navMobileClass($isRuangTulisan) }}"
+                    @if ($isRuangTulisan) aria-current="page" @endif>Ruang Tulisan</a>
+                <a href="{{ route('layanan') }}" class="{{ $navMobileClass($isLayanan) }}"
+                    @if ($isLayanan) aria-current="page" @endif>Layanan</a>
+                <a href="{{ route('toko') }}" class="{{ $navMobileClass($isToko) }}"
+                    @if ($isToko) aria-current="page" @endif>Toko</a>
+                <a href="{{ route('kontak') }}" class="{{ $navMobileClass($isKontak) }}"
+                    @if ($isKontak) aria-current="page" @endif>Kontak</a>
+                <a href="{{ route('profil') }}" class="{{ $navMobileClass($isProfil) }}"
+                    @if ($isProfil) aria-current="page" @endif>Profil</a>
 
                 <!-- Lainnya Dropdown Mobile -->
-                <div x-data="{ open: false }">
+                <div x-data="{ open: {{ $isLainnya ? 'true' : 'false' }} }">
                     <button @click="open = !open"
-                        class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 flex justify-between items-center">
+                        class="w-full text-left {{ $navMobileClass($isLainnya) }} flex justify-between items-center"
+                        @if ($isLainnya) aria-current="true" @endif>
                         <span>Lainnya</span>
                         <svg class="w-4 h-4 ml-1 transform transition-transform duration-200"
                             :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,24 +174,23 @@
                         </svg>
                     </button>
                     <div x-show="open" class="pl-4 space-y-1" style="display: none;">
-                        <a href="{{ route('galeri') }}"
-                            class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50">Galeri</a>
-                        <a href="{{ route('karir') }}"
-                            class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50">Karir</a>
-                        <a href="{{ route('faq') }}"
-                            class="block px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50">FAQ</a>
+                        <a href="{{ route('galeri') }}" class="{{ $navDropdownMobileClass($isGaleri) }}"
+                            @if ($isGaleri) aria-current="page" @endif>Galeri</a>
+                        <a href="{{ route('karir') }}" class="{{ $navDropdownMobileClass($isKarir) }}"
+                            @if ($isKarir) aria-current="page" @endif>Karir</a>
+                        <a href="{{ route('faq') }}" class="{{ $navDropdownMobileClass($isFaq) }}"
+                            @if ($isFaq) aria-current="page" @endif>FAQ</a>
                     </div>
                 </div>
 
                 @if (Route::has('login'))
                     <div class="border-t border-gray-200 pt-4 mt-4 pb-4">
                         @auth
-                            <a href="{{ url('/dashboard') }}"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="{{ $navMobileClass($isDashboard) }}"
+                                @if ($isDashboard) aria-current="page" @endif>Dashboard</a>
                         @else
-                            <a href="{{ route('login') }}"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Log
-                                in</a>
+                            <a href="{{ route('login') }}" class="{{ $navMobileClass($isLogin) }}"
+                                @if ($isLogin) aria-current="page" @endif>Log in</a>
                             {{-- @if (Route::has('register'))
                                 <a href="{{ route('register') }}"
                                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">Register</a>
