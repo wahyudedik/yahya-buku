@@ -179,7 +179,7 @@
 
                         @php
                             $waNumber = $service->wa_number ?? '6285860145144'; // Use service WA or default
-                            $message = "Halo Admin Pena Langit, saya tertarik dengan layanan *{$service->name}*";
+                            $message = "Halo Admin CV. Azriya permata Group, saya tertarik dengan layanan *{$service->name}*";
                             if ($service->price) {
                                 $message .= ' seharga Rp ' . number_format($service->price, 0, ',', '.');
                             }
@@ -206,7 +206,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">Toko Buku</h2>
-                <p class="text-gray-600">Koleksi buku terbaik terbitan Pena Langit</p>
+                <p class="text-gray-600">Koleksi buku terbaik terbitan CV. Azriya permata Group</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -398,11 +398,11 @@
                     </div>
                     <div class="relative z-10 bg-gradient-to-b from-transparent to-blue-900 rounded-lg overflow-hidden">
                         @if ($profile?->ceo_image_path)
-                            <img src="{{ asset('storage/' . $profile->ceo_image_path) }}" alt="CEO Pena Langit"
+                            <img src="{{ asset('storage/' . $profile->ceo_image_path) }}" alt="CEO CV. Azriya permata Group"
                                 class="w-full h-auto object-cover">
                         @else
                             <img src="https://placehold.co/400x500/002B8F/ffffff?text={{ urlencode($profile?->ceo_name ?? 'Aang Fathul Islam') }}"
-                                alt="CEO Pena Langit" class="w-full h-auto object-cover">
+                                alt="CEO CV. Azriya permata Group" class="w-full h-auto object-cover">
                         @endif
                         <div class="absolute bottom-0 left-0 w-full p-4 text-center text-white bg-blue-900/80">
                             <h3 class="font-bold text-lg">{{ $profile?->ceo_name ?? 'AANG FATHUL ISLAM' }}</h3>
