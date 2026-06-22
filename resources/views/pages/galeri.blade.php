@@ -6,7 +6,7 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Galeri Kegiatan</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Dokumentasi aktivitas, acara, dan momen berharga Pena Langit Publishing.
+                Dokumentasi aktivitas, acara, dan momen berharga CV. Azriya permata Group.
             </p>
         </div>
 

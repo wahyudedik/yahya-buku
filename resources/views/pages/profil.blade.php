@@ -6,7 +6,7 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Profil Perusahaan</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Mengenal lebih dekat Pena Langit Publishing
+                Mengenal lebih dekat CV. Azriya permata Group Publishing
             </p>
         </div>
 
@@ -24,9 +24,9 @@
                 </div>
                 <div class="relative z-10 bg-gradient-to-b from-transparent to-blue-900 rounded-lg overflow-hidden">
                     @if($profile?->ceo_image_path)
-                        <img src="{{ asset('storage/' . $profile->ceo_image_path) }}" alt="CEO Pena Langit" class="w-full h-auto object-cover">
+                        <img src="{{ asset('storage/' . $profile->ceo_image_path) }}" alt="CEO CV. Azriya permata Group" class="w-full h-auto object-cover">
                     @else
-                        <img src="https://placehold.co/400x500/002B8F/ffffff?text={{ urlencode($profile?->ceo_name ?? 'Aang Fathul Islam') }}" alt="CEO Pena Langit" class="w-full h-auto object-cover">
+                        <img src="https://placehold.co/400x500/002B8F/ffffff?text={{ urlencode($profile?->ceo_name ?? 'Aang Fathul Islam') }}" alt="CEO CV. Azriya permata Group" class="w-full h-auto object-cover">
                     @endif
                     <div class="absolute bottom-0 left-0 w-full p-4 text-center text-white bg-blue-900/80">
                         <h3 class="font-bold text-lg">{{ $profile->ceo_name ?? 'AANG FATHUL ISLAM' }}</h3>
@@ -41,11 +41,11 @@
                 <p class="text-gray-600 mb-6 leading-relaxed">
                     {{ $profile->vision_mission_description ?? 'Menjadi penerbit buku yang profesional, amanah, dan berkualitas untuk mencerdaskan kehidupan bangsa melalui literasi. Kami berkomitmen memberikan layanan terbaik bagi penulis dan pembaca di seluruh Indonesia.' }}
                 </p>
-                
+
                 <blockquote class="text-xl text-gray-600 italic border-l-4 border-blue-500 pl-4 mb-6">
                     “{{ $profile->quote ?? 'Kemerdekaan yang hakiki adalah saat kita bisa mengabadikan gagasan dan pemikiran kita melalui tulisan, karena tulisan akan abadi tak terbatas oleh ruang dan waktu.' }}”
                 </blockquote>
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                     <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center border border-gray-100">
                         <h4 class="font-bold text-blue-600 text-2xl mb-1">{{ $profile->books_count ?? '500+' }}</h4>

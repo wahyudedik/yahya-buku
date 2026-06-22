@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Pena Langit') }}</title>
+    <title>{{ config('app.name', 'CV. Azriya permata Group') }}</title>
     @php
         $branding = \App\Models\BrandingSetting::query()->first();
         $v = $branding?->cache_bust_token;
@@ -68,7 +68,7 @@
                                 style="{{ $branding?->logo_width ? 'width:' . $branding->logo_width . 'px;' : '' }}{{ $branding?->logo_height ? 'height:' . $branding->logo_height . 'px;' : '' }}"
                                 class="object-contain max-h-12 w-auto" />
                         @else
-                            <span>Pena Langit</span>
+                            <span>CV. Azriya permata Group</span>
                         @endif
                     </a>
                 </div>
@@ -331,7 +331,7 @@
             </div>
 
             <div class="pt-8 text-center text-blue-200 text-sm">
-                <p>{{ $footerSetting?->copyright_text ?? '© ' . date('Y') . ' Pena Langit. All Right Reserved' }} <br>
+                <p>{{ $footerSetting?->copyright_text ?? '© ' . date('Y') . ' CV. Azriya permata Group. All Right Reserved' }} <br>
                     {{ $footerSetting?->created_by_text ?? 'created by' }} <a
                         href="{{ $footerSetting?->created_by_url ?? 'https://noteds.com' }}"
                         target="_blank"><b>Noteds Technology</b></a>

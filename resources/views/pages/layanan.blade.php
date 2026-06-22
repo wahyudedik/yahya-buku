@@ -6,7 +6,7 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Layanan Kami</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Pena Langit Publishing menyediakan berbagai layanan profesional untuk membantu Anda menerbitkan karya terbaik.
+                CV. Azriya permata Group Publishing menyediakan berbagai layanan profesional untuk membantu Anda menerbitkan karya terbaik.
             </p>
         </div>
 
@@ -47,7 +47,7 @@
                         </div>
 
                         <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $service->name }}</h3>
-                        
+
                         <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
                             @if($service->duration)
                                 <span class="flex items-center gap-1">
@@ -68,10 +68,10 @@
                                     {{ $service->price ? 'Rp ' . number_format($service->price, 0, ',', '.') : 'Hubungi Kami' }}
                                 </span>
                             </div>
-                            
+
                             @php
                                 $waNumber = $service->wa_number ?? '6285860145144'; // Use service WA or default
-                                $message = "Halo Admin Pena Langit, saya tertarik dengan layanan *{$service->name}*";
+                                $message = "Halo Admin CV. Azriya permata Group, saya tertarik dengan layanan *{$service->name}*";
                                 if($service->price) $message .= " seharga Rp " . number_format($service->price, 0, ',', '.');
                                 $message .= ". Mohon info lebih lanjut.";
                                 $waLink = "https://wa.me/{$waNumber}?text=" . urlencode($message);

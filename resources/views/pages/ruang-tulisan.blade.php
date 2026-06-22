@@ -6,7 +6,7 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Ruang Tulisan</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Kumpulan artikel inspiratif, berita terkini, dan wawasan menarik dari dunia literasi Pena Langit.
+                Kumpulan artikel inspiratif, berita terkini, dan wawasan menarik dari dunia literasi CV. Azriya permata Group.
             </p>
         </div>
 

@@ -6,7 +6,7 @@
         <div class="text-center mb-12">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Toko Buku</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Temukan koleksi buku terbaik dari Pena Langit Publishing.
+                Temukan koleksi buku terbaik dari CV. Azriya permata Group Publishing.
             </p>
         </div>
 
@@ -57,7 +57,7 @@
                             <a href="{{ route('book.show', $book->slug) }}" class="hover:text-blue-600 transition">{{ $book->title }}</a>
                         </h3>
                         <p class="text-sm text-gray-500 mb-3">{{ $book->author }}</p>
-                        
+
                         <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
                             <span class="text-lg font-bold text-gray-900">Rp {{ number_format($book->price, 0, ',', '.') }}</span>
                         </div>
